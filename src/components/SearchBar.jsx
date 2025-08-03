@@ -29,6 +29,16 @@ const SearchBar = () => {
           className="absolute left-3 top-1/2 transform -translate-y-1/2  mt-0.5 w-[24px] h-[24px]"
         />
       </button>
+      <button 
+        type="button" 
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 flex item-center"
+      >
+        <div className="w-[2px] h-[24]  bg-[#070D23] mr-[16px]"></div>
+        <img 
+          src={microphoneIcone} alt="voice search" 
+          className="w-[24px] h-[24px] "
+        />
+      </button>
     </form>
   );
 };
