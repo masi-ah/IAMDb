@@ -1,21 +1,30 @@
-import { useState} from "react"
+import { useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom";
 import searchIcon from "../assets/icons/search.svg";
-import Microphone from "./Microphon";
+import Microphone from "./Microphone";
 
-const SearchBar = () => {
+const SearchBar = ({ initialValue = "", onSearch }) => {
   const [isListening, setIsListening] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(initialValue);
   const navigate = useNavigate();
-  const handleSearch = (e) => {
+
+  useEffect(() => {
+    setSearchQuery(initialValue);
+  }, [initialValue]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim() === "") return;
-    const params = new URLSearchParams({ query: searchQuery });
-    navigate(`/list?${params.toString()}`);
+    
+    if (onSearch) {
+      onSearch(searchQuery)
+    } else {
+      navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
+    }
   };
 
   return (
-    <form onSubmit={handleSearch} className="w-full max-w-xs sm:max-w-md mx-auto relative">
+    <form onSubmit={handleSubmit} className="w-full max-w-xs sm:max-w-md mx-auto relative">
       <input 
         type="text"  
         className="w-full bg-[#222C4F] text-white h-[48px] rounded-[16px] pl-10 outline-none"
