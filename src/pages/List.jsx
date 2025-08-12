@@ -8,35 +8,52 @@ const List = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const query = searchParams.get("query") || "";
+  const genre = searchParams.get("genre") || "";
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!query) {
-      setMovies([]);
-      return;
-    }
+    console.log("query from, URL:", query)
+    console.log("genre from, URL:", genre)
+
+   setMovies([]);
+   setError(null);
+
+   if (!query && !genre) return;
 
     const fetchMovies = async () => {
       setLoading(true);
       setError(null);
       try{
-        const res = await fetch(
-          `https://moviesapi.codingfront.dev/api/v1/movies?q=${encodeURIComponent(query)}`
-        );
+        let url = 'https://moviesapi.codingfront.dev/api/v1/movies?';
+        const params = [];
+
+        if (genre) {
+          params.push(`genres=${encodeURIComponent(genre)}`);
+        }
+
+        if (query) {
+          params.push(`q=${encodeURIComponent(query)}`);
+        }
+
+        url += params.join('&');
+
+        const res = await fetch(url);
 
         if(!res.ok) {
-          throw new Error("faild to fetch movies");
+          throw new Error("failed to fetch movies");
         } 
 
         const data = await res.json();
         const moviesData = data.data || data;
+
         setMovies(moviesData);
 
         if (moviesData.length === 0) {
           toast("no movies found for your search.")
         }
+  
       } catch (err) {
         setError(err.message);
         toast.error(`Error:${err.message}`);
@@ -46,7 +63,7 @@ const List = () => {
     };
 
     fetchMovies();
-  }, [query]);
+  }, [genre, query]);
 
   const handleSearch = (searchQuery) => {
     navigate(`/list?query=${encodeURIComponent(searchQuery)}`);

@@ -20,7 +20,7 @@ const GenreButtons = () => {
    
   const handleClick = (genre) => {
     setSelectedGenre(genre);
-    navigate(`/list/${genre.toLowerCase()}`);
+    navigate(`/list?genre=${encodeURIComponent(genre)}`);
   };
   
   const loadMoreGenre = () => {
