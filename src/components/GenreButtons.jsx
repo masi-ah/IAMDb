@@ -1,6 +1,6 @@
 import GenreButton from "./GenreButton";
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const allGenre = [
@@ -14,12 +14,14 @@ const loadsteps = [4,4,4,5,3];
 const GenreButtons = () => {
   const [visibleCount, setVisibleCount] = useState(loadsteps[0]);
   const [loadstepIndex, setLoadStepIndex] = useState(1);
-  const [selectedGenre, setSelectedGenre] = useState(null);
+  // const [selectedGenre, setSelectedGenre] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
-   
+  const [searchParams] = useSearchParams();
+  const genreFromUrl =searchParams.get("genre") || null;
+
   const handleClick = (genre) => {
-    setSelectedGenre(genre);
     navigate(`/list?genre=${encodeURIComponent(genre)}`);
   };
   
@@ -34,16 +36,8 @@ const GenreButtons = () => {
       ? loadsteps[loadstepIndex] 
       : loadsteps[loadsteps.length - 1];
 
-    setVisibleCount((prev) => {
-      const newCount= Math.min(prev + nextLoadStep, allGenre.length);
-      return newCount;
-    });
-
-    setLoadStepIndex((prev) => {
-      if (prev< loadsteps.length) return prev + 1;
-      return prev;
-    });
-
+    setVisibleCount((prev) => Math.min(prev + nextLoadStep, allGenre.length));
+    setLoadStepIndex((prev) => (prev< loadsteps.length ? prev + 1 : prev));
     setLoading(false);
     }, 800); 
     };
@@ -67,7 +61,7 @@ const GenreButtons = () => {
             <GenreButton 
             key={genre} 
             genre={genre}
-            isActive={selectedGenre === genre}
+            isActive={genre === genreFromUrl}
             onClick={() => handleClick(genre)}
             />
           ))}

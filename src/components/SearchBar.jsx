@@ -24,7 +24,7 @@ const SearchBar = ({ initialValue = "", onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-xs sm:max-w-md mx-auto relative">
+    <form onSubmit={handleSubmit} className="w-full max-w-sm mx-auto relative">
       <input 
         type="text"  
         className="w-full bg-[#222C4F] text-white h-[48px] rounded-[16px] pl-10 outline-none"

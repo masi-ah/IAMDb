@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import SearchBar from "../components/SearchBar";
 import MovieItem from "../components/MovieItem";
+import flashback from "../assets/icons/flashback.svg";
 
 const List = () => {
   const [searchParams] = useSearchParams();
@@ -14,8 +15,9 @@ const List = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("query from, URL:", query)
-    console.log("genre from, URL:", genre)
+   console.log("useEffect triggered");
+   console.log("query:", query);
+    console.log("genre:", genre);
 
    setMovies([]);
    setError(null);
@@ -33,11 +35,12 @@ const List = () => {
           params.push(`genres=${encodeURIComponent(genre)}`);
         }
 
-        if (query) {
+        else if (query) {
           params.push(`q=${encodeURIComponent(query)}`);
         }
 
         url += params.join('&');
+        console.log("fetching URL:", url);
 
         const res = await fetch(url);
 
@@ -56,7 +59,7 @@ const List = () => {
   
       } catch (err) {
         setError(err.message);
-        toast.error(`Error:${err.message}`);
+        toast.error(`Error: ${err.message}`);
       } finally {
         setLoading(false);
       }
@@ -70,8 +73,22 @@ const List = () => {
   };
 
   return (
-    <div className="mb-[32px]">
-      <SearchBar initialQuery={query} onSearch={handleSearch} />
+    <div className="list-container bg-[#070D23]">
+      <div className="header relative top-[10px] mb-[10px] flex items-center">
+        <button 
+        onClick={() => navigate("/")}
+        className="p-[15px] pt-[32px]"
+        >
+          <img src={flashback} alt=" go back" />
+        </button>
+        <div className=" flex flex-col items-center mx-auto mt-[25px] ml-[90px]">
+        <span className="text-white text-center font-bold  ">Result</span>
+        <span className="text-gray-500 text-[12px] font-light text-center">for "Search Query"</span>
+        </div>
+      </div>
+      <div className="mt-[32px]">
+        <SearchBar initialQuery={query} onSearch={handleSearch} />
+      </div>
       {loading ? (
         <div> loading movies...</div>
       ) : error ? (
