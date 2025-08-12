@@ -17,16 +17,19 @@ const List = () => {
   useEffect(() => {
    console.log("useEffect triggered");
    console.log("query:", query);
-    console.log("genre:", genre);
+   console.log("genre:", genre);
+   
+   if ((!query && !genre)) return;
+
+   const controller = new AbortController();
+   const signal = controller.signal;
+
 
    setMovies([]);
    setError(null);
-
-   if (!query && !genre) return;
+   setLoading(true);
 
     const fetchMovies = async () => {
-      setLoading(true);
-      setError(null);
       try{
         let url = 'https://moviesapi.codingfront.dev/api/v1/movies?';
         const params = [];
@@ -42,7 +45,7 @@ const List = () => {
         url += params.join('&');
         console.log("fetching URL:", url);
 
-        const res = await fetch(url);
+        const res = await fetch(url, {signal});
 
         if(!res.ok) {
           throw new Error("failed to fetch movies");
@@ -52,47 +55,57 @@ const List = () => {
         const moviesData = data.data || data;
 
         setMovies(moviesData);
-
+        
         if (moviesData.length === 0) {
           toast("no movies found for your search.")
         }
-  
       } catch (err) {
+        if (err.name === "AbortError"){
+          console.log("fetch aborted")
+        } else {
         setError(err.message);
         toast.error(`Error: ${err.message}`);
+        }
       } finally {
         setLoading(false);
       }
     };
+       fetchMovies();
 
-    fetchMovies();
-  }, [genre, query]);
+      return () => {
+        controller.abort();
+      }
+      }, [genre, query]);
 
   const handleSearch = (searchQuery) => {
     navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
   };
 
   return (
-    <div className="list-container bg-[#070D23]">
-      <div className="header relative top-[10px] mb-[10px] flex items-center">
-        <button 
-        onClick={() => navigate("/")}
-        className="p-[15px] pt-[32px]"
-        >
-          <img src={flashback} alt=" go back" />
-        </button>
-        <div className=" flex flex-col items-center mx-auto mt-[25px] ml-[90px]">
-        <span className="text-white text-center font-bold  ">Result</span>
-        <span className="text-gray-500 text-[12px] font-light text-center">for "Search Query"</span>
+    <div className="min-h-screen bg-[#070D23]">
+      <div className="container mx-auto px-3 sm:px-6 max-w-lg py-4 flex-col sticky top-0 bg-[#070D23] z-10">
+        <div className="mb-4 bg-[#070D23] flex  justify-between items-center">
+          <button 
+          onClick={() => navigate("/")}
+          className="w-10 h-10 flex items-center"
+          >
+            <img src={flashback} alt=" go back" className="w-10 h-10"/>
+          </button>
+          <div className=" flex flex-col items-center">
+          <span className="text-white font-bold  ">Result</span>
+          <span className="text-gray-500 text-xs font-light text-center">for "Search Query"</span>
+          </div>
+          <div className="w-10"/>
         </div>
-      </div>
-      <div className="mt-[32px]">
+      <div className="mb-6" >
         <SearchBar initialQuery={query} onSearch={handleSearch} />
       </div>
+     </div>
+      <div className="container mx-auto px-3 sm=px-6 max-w-lg">
       {loading ? (
-        <div> loading movies...</div>
+        <div className="text-center text-white"> loading movies...</div>
       ) : error ? (
-        <div>Error: {error}</div>
+        <div className="text-center text-red-500">Error: {error}</div>
       ) : (
       <ul>
         {movies.map((movie) => (
@@ -100,6 +113,7 @@ const List = () => {
         ))}
       </ul>
       )}
+      </div>
     </div>
    );
   }
