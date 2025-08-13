@@ -12,7 +12,6 @@ const List = () => {
   const genre = searchParams.get("genre") || "";
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
    console.log("useEffect triggered");
@@ -26,7 +25,6 @@ const List = () => {
 
 
    setMovies([]);
-   setError(null);
    setLoading(true);
 
     const fetchMovies = async () => {
@@ -53,6 +51,7 @@ const List = () => {
 
         const data = await res.json();
         const moviesData = data.data || data;
+        console.log("movies API response:", moviesData)
 
         setMovies(moviesData);
         
@@ -60,12 +59,8 @@ const List = () => {
           toast("no movies found for your search.")
         }
       } catch (err) {
-        if (err.name === "AbortError"){
-          console.log("fetch aborted")
-        } else {
-        setError(err.message);
-        toast.error(`Error: ${err.message}`);
-        }
+        if (err.name !== "AbortError") toast.error(`Error: ${err.message}`);
+          // console.log("fetch aborted")
       } finally {
         setLoading(false);
       }
@@ -84,7 +79,7 @@ const List = () => {
   return (
     <div className="min-h-screen bg-[#070D23]">
       <div className="container mx-auto px-3 sm:px-6 max-w-lg py-4 flex-col sticky top-0 bg-[#070D23] z-10">
-        <div className="mb-4 bg-[#070D23] flex  justify-between items-center">
+        <div className="mb-8 pt-6 bg-[#070D23] flex  justify-between items-center">
           <button 
           onClick={() => navigate("/")}
           className="w-10 h-10 flex items-center"
@@ -104,8 +99,6 @@ const List = () => {
       <div className="container mx-auto px-3 sm=px-6 max-w-lg">
       {loading ? (
         <div className="text-center text-white"> loading movies...</div>
-      ) : error ? (
-        <div className="text-center text-red-500">Error: {error}</div>
       ) : (
       <ul>
         {movies.map((movie) => (
