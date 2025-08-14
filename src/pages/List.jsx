@@ -92,7 +92,7 @@ const List = () => {
           </div>
           <div className="w-10"/>
         </div>
-      <div className="mb-6" >
+      <div>
         <SearchBar initialQuery={query} onSearch={handleSearch} />
       </div>
      </div>
