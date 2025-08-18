@@ -1,3 +1,23 @@
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -110,23 +130,4 @@ const List = () => {
     </div>
    );
   }
-export default List;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default List;   
