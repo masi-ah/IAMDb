@@ -62,7 +62,7 @@ const Detail = () => {
           >
             <img src={flashback} alt="Go back" className="w-10 h-10" />
           </button>
-        <div className="text-white absolute top-40 mt-auto pb-8">
+        <div className="text-white absolute top-38 mt-auto pb-8">
           <h1
            className="font-bold text-[48px] mb-0" 
            style={{ fontFamily: "'Inter', sans-serif",}}
@@ -72,7 +72,7 @@ const Detail = () => {
           <div className="relative z-20 text-[12px] font-light -mt-3.5 text-white/40">
             {movie.genres.join(", ")}
           </div>
-            <p className="text-white/60 mt-3 text-[14px] leading-[24px]">
+            <p className="text-white/60 mt-2 text-[14px] leading-[24px]">
             {movie.plot}
             </p>
           <div className="flex items-center gap-3 mt-4">
@@ -82,9 +82,25 @@ const Detail = () => {
             <span className="border bg-[#222C4F] text-white/70  font-normal text-[12px] rounded-[8px] py-[6px] px-[12px] border-none outline-none">{movie.year}</span>
              <span className="border bg-[#222C4F] text-white/70  font-normal text-[12px] rounded-[8px] py-[6px] px-[12px] border-none outline-none">{movie.runtime}</span>
           </div>
-          <div className="pt-4">
-            <RatingCircle rating={movie.imdb_rating} />
+          <div className="flex items-center gap-2 pt-4">
+            <RatingCircle rating={Number(movie.imdb_rating) || 0} />
+            <div>
+              <span>{movie.imdb_vote != null ? new Intl.NumberFormat().format(movie.imdb_vote) : "N/A"}</span>
+              {movie.rotten_tomatoes_score != null && (
+                <span>{new Intl.NumberFormat().format(movie.rotten_tomatoes_score)}% on Rotten Tomatoes</span>
+                )}
+              {movie.metacritic_score != null ? (
+                <span>{new Intl.NumberFormat().format(movie.metacritic_score)} on Metacritic</span>
+                ) : null}
+            </div>
           </div>
+            <div className="w-full mt-4 overflow-hidden rounded-[18px]">
+              <img
+               src={movie.poster || movie.images?.[0]} 
+               alt={`${movie.title} Poster`}
+               className="w-full h-[406px] object-cover object-top"
+               />
+            </div>
          </div>
        </div>
      </div>
