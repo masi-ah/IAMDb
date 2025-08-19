@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import flashback from "../assets/icons/flashback.svg";  
 import {useNavigate, useParams} from "react-router-dom"    
 import toast from "react-hot-toast";
+import RatingCircle from "../components/RatingCircle";
 
 const Detail = () => {
   const { id } = useParams();
@@ -74,12 +75,15 @@ const Detail = () => {
             <p className="text-white/60 mt-3 text-[14px] leading-[24px]">
             {movie.plot}
             </p>
-          <div className="flex items-cente gap-3 mt-4">
+          <div className="flex items-center gap-3 mt-4">
             {movie.rated && (
               <span className="border bg-[#222C4F] text-white/70  font-normal text-[12px] rounded-[8px] py-[6px] px-[12px] border-none outline-none">{movie.rated}</span>
             )}
             <span className="border bg-[#222C4F] text-white/70  font-normal text-[12px] rounded-[8px] py-[6px] px-[12px] border-none outline-none">{movie.year}</span>
              <span className="border bg-[#222C4F] text-white/70  font-normal text-[12px] rounded-[8px] py-[6px] px-[12px] border-none outline-none">{movie.runtime}</span>
+          </div>
+          <div className="pt-4">
+            <RatingCircle rating={movie.imdb_rating} />
           </div>
          </div>
        </div>
