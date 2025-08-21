@@ -1,23 +1,4 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                                                                                                                                                                                                                                  
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -97,9 +78,8 @@ const List = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#070D23]">
-      <div className="container mx-auto px-3 sm:px-6 max-w-lg py-4 flex-col sticky top-0 bg-[#070D23] z-10">
-        <div className="mb-8 pt-6 bg-[#070D23] flex  justify-between items-center">
+    <div className="min-h-screen bg-[#070D23] px-3 sm:px-6 md:max-w-[920px] max-w-[406px] mx-auto">
+      <div className="sticky top-0 bg-[#070D23] z-10 pt-6 mb-8 flex justify-between items-center">
           <button 
           onClick={() => navigate("/")}
           className="w-10 h-10 flex items-center"
@@ -112,13 +92,9 @@ const List = () => {
           </div>
           <div className="w-10"/>
         </div>
-      <div>
         <SearchBar initialQuery={query} onSearch={handleSearch} />
-      </div>
-     </div>
-      <div className="container mx-auto px-3 sm=px-6 max-w-lg">
       {loading ? (
-        <div className="text-center text-white"> loading movies...</div>
+        <div className="text-center text-white mt-6"> loading movies...</div>
       ) : (
       <ul>
         {movies.map((movie) => (
@@ -127,7 +103,6 @@ const List = () => {
       </ul>
       )}
       </div>
-    </div>
    );
   }
 export default List;   

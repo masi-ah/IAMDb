@@ -13,11 +13,11 @@ const MovieItem = ({movie, onLikeChange }) => {
   };
 
   return (
-    <li className="flex items-start bg-[#070D23] mt-4 pb-4 border-b border-b-[1px] border-[rgba(34,44,79,0.5)]  last:border-b-0">
+    <li className="flex items-start bg-[#070D23] mt-4 pb-4 border-b-[1px] border-[rgba(34,44,79,0.5)]  last:border-b-0">
       <img 
       src={movie.poster || "default-poster.jpg"} 
       alt={movie.title || "No title"}
-      className="w-24 h-24 rounded-xl object-cover flex-shrink-0"
+      className="w-[122px] md:w-[137px] h-[122px] md:h-[137px] rounded-xl object-cover flex-shrink-0"
       />
       <div className="ml-4 flex-1 flex flex-col ">
         <div className="flex justify-between">
