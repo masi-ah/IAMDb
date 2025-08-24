@@ -1,4 +1,4 @@
-const GenreButton = ({genre, isActive, onClick}) => {
+const GenreButton = ({ genre, isActive, onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -11,7 +11,7 @@ const GenreButton = ({genre, isActive, onClick}) => {
         text-[12px] font-normal
         ${isActive ? "bg-[#16203d]" : ""}`}
     >
-       {genre}
+      {genre}
     </button>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react"
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import searchIcon from "../assets/icons/search.svg";
 import Microphone from "./Microphone";
@@ -15,26 +15,30 @@ const SearchBar = ({ initialValue = "", onSearch }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim() === "") return;
-    
+
     if (onSearch) {
-      onSearch(searchQuery)
+      onSearch(searchQuery);
     } else {
       navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-[406px] md:max-w-[920px] mx-auto relative">
-      <input 
-        type="text"  
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-[406px] md:max-w-[920px] mx-auto relative"
+    >
+      <input
+        type="text"
         className="w-full bg-[#222C4F] text-white h-[48px] rounded-[16px] pl-10 outline-none"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search movies"
       />
       <button type="submit">
-        <img src={searchIcon} 
-          alt="search" 
+        <img
+          src={searchIcon}
+          alt="search"
           className="absolute left-3 top-1/2 transform -translate-y-1/2  mt-0.5 w-[24px] h-[24px]"
         />
       </button>

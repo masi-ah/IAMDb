@@ -1,4 +1,4 @@
-const RatingCircle = ({rating}) => {
+const RatingCircle = ({ rating }) => {
   const size = 80;
   const strokeWidth = 6;
   const radius = (size - strokeWidth) / 2;
@@ -12,7 +12,7 @@ const RatingCircle = ({rating}) => {
         className="w-full h-full transform -rotate-90"
         viewBox={`0 0 ${size} ${size}`}
       >
-        <circle 
+        <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -20,7 +20,7 @@ const RatingCircle = ({rating}) => {
           strokeWidth={strokeWidth}
           fill="transparent"
         />
-        <circle 
+        <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -31,8 +31,10 @@ const RatingCircle = ({rating}) => {
           strokeDashoffset={offset}
           strokeLinecap="round"
         />
-      </svg >
-      <span className="absolute inset-0 flex items-center justify-center text-white">{normalizedRating.toFixed(1)}</span>
+      </svg>
+      <span className="absolute inset-0 flex items-center justify-center text-white">
+        {normalizedRating.toFixed(1)}
+      </span>
     </div>
   );
 };

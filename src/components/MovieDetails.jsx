@@ -13,25 +13,29 @@ const MovieDetails = ({ movie }) => {
     { label: "Country", value: movie.country },
     { label: "Language", value: movie.language },
     { label: "Awards", value: movie.awards },
-  ].filter(item => item.value && item.value.trim() !== "");
+  ].filter((item) => item.value && item.value.trim() !== "");
 
   return (
     <div className="text-white">
       <h2 className="font-bold text-[24px] mb-2">Details</h2>
-        <div className="flex flex-col">
+      <div className="flex flex-col">
         {details.map((item, index) => (
-          <div 
-            key={index}  
+          <div
+            key={index}
             className="flex border-b py-2 last:border-b-0"
-            style={{borderColor: "#222c4f"}}
+            style={{ borderColor: "#222c4f" }}
           >
-            <span className=" text-[14px] text-white w-[120px]">{item.label}</span>
-            <span className="text-gray-500 flex-1 text-[12px]">{item.value}</span>
+            <span className=" text-[14px] text-white w-[120px]">
+              {item.label}
+            </span>
+            <span className="text-gray-500 flex-1 text-[12px]">
+              {item.value}
+            </span>
           </div>
         ))}
       </div>
     </div>
   );
-}
+};
 
 export default MovieDetails;
