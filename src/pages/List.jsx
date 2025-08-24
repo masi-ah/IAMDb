@@ -14,9 +14,9 @@ const List = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log("useEffect triggered");
-    console.log("query:", query);
-    console.log("genre:", genre);
+    // console.log("useEffect triggered");
+    // console.log("query:", query);
+    // console.log("genre:", genre);
 
     if (!query && !genre) return;
 
@@ -31,24 +31,28 @@ const List = () => {
         let url = "https://moviesapi.codingfront.dev/api/v1/movies?";
         const params = [];
 
-        if (genre) {
-          params.push(`genres=${encodeURIComponent(genre)}`);
-        } else if (query) {
+        if (query) {
           params.push(`q=${encodeURIComponent(query)}`);
         }
 
         url += params.join("&");
-        console.log("fetching URL:", url);
+        // console.log("fetching URL:", url);
 
         const res = await fetch(url, { signal });
 
         if (!res.ok) {
-          throw new Error("failed to fetch movies");
+          throw new Error("failed to fetch movies")
         }
 
         const data = await res.json();
-        const moviesData = data.data || data;
-        console.log("movies API response:", moviesData);
+        let moviesData = data.data || data;
+        // console.log("movies API response:", moviesData);
+
+        if (genre) {
+          moviesData = moviesData.filter(movie =>
+             movie.genres && movie.genres.includes(genre)
+            );
+        };
 
         setMovies(moviesData);
 
@@ -85,7 +89,7 @@ const List = () => {
         <div className=" flex flex-col items-center">
           <span className="text-white font-bold  ">Result</span>
           <span className="text-gray-500 text-xs font-light text-center">
-            for "Search Query"
+             {query ? `for "${query}"` : genre ? `for ${genre} genre` : ""}
           </span>
         </div>
         <div className="w-10" />

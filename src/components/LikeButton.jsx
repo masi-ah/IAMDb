@@ -1,44 +1,6 @@
-import { useState } from "react";
-import StarIcon from "../assets/icons/star.svg";
-import { Link } from "react-router-dom";
-
-const MovieItem = ({ movie, onLikeChange }) => {
-  console.log(movie);
-  const [liked, setLiked] = useState(false);
-
-  const handleLike = () => {
-    const newLiked = !liked;
-    setLiked(newLiked);
-    if (onLikeChange) onLikeChange(movie.id, newLiked);
-  };
-
-  return (
-    <li className="flex items-start bg-[#070D23] mt-4 pb-4 border-b-[1px] border-[rgba(34,44,79,0.5)]  last:border-b-0">
-      <img
-        src={movie.poster || "default-poster.jpg"}
-        alt={movie.title || "No title"}
-        className="w-[122px] md:w-[137px] h-[122px] md:h-[137px] rounded-xl object-cover flex-shrink-0"
-      />
-      <div className="ml-4 flex-1 flex flex-col justify-start pt-2 md:pt-3">
-        <div className="flex justify-between items-start">
-          <Link to={`/detail/${movie.id}`} className="flex flex-col flex-1">
-            <h3 className="text-white font-bold text-[24px] md:text-[28px] leading-tight mb-0">
-              {movie.title}
-            </h3>
-            {movie.genres && movie.genres.length > 0 && (
-              <p className="text-[12px] text-gray-500 ">{movie.genres.join(", ")}</p>
-            )}
-            <p className="mt-2 flex flex-wrap items-center gap-[12px] text-[18px] font-thin text-white/80">
-              <span>{movie.year || "N/A"}</span>
-              <span className="inline-block w-[6px] h-[6px] bg-[#222C4F] rounded-full"></span>
-              <span> {movie.country || "Unknown"} </span>
-              <span className="inline-block w-[6px] h-[6px] bg-[#222C4F] rounded-full"></span>
-              <img src={StarIcon} alt="star" className="w-4 h-4" />
-              <span>{movie.imdb_rating}</span>
-            </p>
-          </Link>
-          <button 
-          onClick={handleLike} 
+const LikeButton = ({ liked, onClick })  => (
+  <button 
+          onClick={onClick} 
           className="p-1 mt-2 md:mt-3 self-start transition-colors duration-300 group"
           aria-label={liked ? "Remove from favorites" : "Add to favorites"}
         >
@@ -72,10 +34,5 @@ const MovieItem = ({ movie, onLikeChange }) => {
            </svg>
           )}
         </button>
-      </div>
-    </div>
-  </li>
 );
-};
-
-export default MovieItem;
+export default LikeButton
