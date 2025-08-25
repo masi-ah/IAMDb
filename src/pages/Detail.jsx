@@ -61,7 +61,8 @@ const Detail = () => {
       <div className="text-white text-xl">Movie not found</div>
     </div>
   );
-
+   
+  const isMovieFavorite = isFavorite(movie.id)
   //  console.log("Movie inside render:", movie)
 
   return (
@@ -132,10 +133,17 @@ const Detail = () => {
               </div>
 
               <div className="sticky bottom-4 z-50 w-full max-w-lg mx-auto">
-                <LikeButton
-                  liked={isFavorite(movie.id)}
-                  onClick={handleFavoriteClick}
-                />
+              <button
+                onClick={handleFavoriteClick}
+                  className={`w-full flex items-center justify-center py-[12px] px-[24px] rounded-[12px] mt-4 transition-colors duration-300 ${
+                    isMovieFavorite 
+                      ? "bg-[#222C4F] text-white border border-none" 
+                      : "bg-[#724CF9] text-white"
+                  }`}
+                aria-label={isMovieFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              >
+                {isMovieFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              </button>
               </div>
             </div>
           </div>
@@ -184,7 +192,7 @@ const Detail = () => {
                   </div>
                   <div className="mt-2.5">
                  <LikeButton liked={isFavorite(movie.id)} onClick={handleFavoriteClick}/>
-                 </div>
+                   </div>
                 </div>
                 <p className="text-gray-300 leading-relaxed mb-6">
                   {movie.plot}
