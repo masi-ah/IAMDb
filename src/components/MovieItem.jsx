@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 
 const MovieItem = ({ movie, isFavorite, onSwitchFavorite }) => {
   // console.log(movie);
-  // const [liked, setLiked] = useState(false);
-
   const handleLike = () => {
    onSwitchFavorite(movie.id);
   };

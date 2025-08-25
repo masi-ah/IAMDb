@@ -26,7 +26,7 @@ const Detail = () => {
   const handleFavoriteClick = () => {
   const currentlyFavorite = isFavorite(movie.id);
   switchFavorite(movie.id); 
-   toast.success(currentlyFavorite ? "Removed from Favorites" : "Added to Favorites"); // پیام درست
+   toast.success(currentlyFavorite ? "Removed from Favorites" : "Added to Favorites"); 
   };
 
   useEffect(() => {

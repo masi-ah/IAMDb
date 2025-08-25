@@ -56,7 +56,6 @@ const MovieRating = ({ movie }) => {
       <div className=" hidden md:flex flex-col gap-4">
         <div className="flex items-center gap-4 text-[14px]">
             <RatingCircle rating={Number(movie.imdb_rating) || 0} />
-             {/* <div className="flex flex-col gap-2"> */}
              {imdbVotes && (
             <div className="flex flex-col">
               <span className="text-white font-roboto font-bold leading-[24px]">{imdbVotes}</span>

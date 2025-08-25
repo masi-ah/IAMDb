@@ -31,7 +31,6 @@ const loadsteps = [4, 4, 4, 5, 3];
 const GenreButtons = () => {
   const [visibleCount, setVisibleCount] = useState(loadsteps[0]);
   const [loadstepIndex, setLoadStepIndex] = useState(1);
-  // const [selectedGenre, setSelectedGenre] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
