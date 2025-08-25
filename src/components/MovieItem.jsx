@@ -1,12 +1,17 @@
 import StarIcon from "../assets/icons/star.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MovieItem = ({ movie, isFavorite, onSwitchFavorite }) => {
+  const navigate = useNavigate();
   // console.log(movie);
   const handleLike = () => {
    onSwitchFavorite(movie.id);
   };
-
+  const handleGenreClick = (genre, e) => {
+    e.stopPropagation();
+    navigate(`/list?genre=${encodeURIComponent(genre)}`);
+  };
+    
   return (
     <li className="flex items-start bg-[#070D23] mt-4 pb-4 border-b-[1px] border-[rgba(34,44,79,0.5)]  last:border-b-0">
       <img
@@ -16,22 +21,38 @@ const MovieItem = ({ movie, isFavorite, onSwitchFavorite }) => {
       />
       <div className="ml-4 flex-1 flex flex-col justify-start pt-2 md:pt-3">
         <div className="flex justify-between items-start">
+          <div className="flex flex-col flex-1">
           <Link to={`/detail/${movie.id}`} className="flex flex-col flex-1">
             <h3 className="text-white font-bold text-[24px] md:text-[28px] leading-tight mb-0">
               {movie.title}
             </h3>
-            {movie.genres && movie.genres.length > 0 && (
-              <p className="text-[12px] text-gray-500 ">{movie.genres.join(", ")}</p>
-            )}
-            <p className="mt-2 flex flex-wrap items-center gap-[12px] text-[18px] font-thin text-white/80">
-              <span>{movie.year || "N/A"}</span>
-              <span className="inline-block w-[6px] h-[6px] bg-[#222C4F] rounded-full"></span>
-              <span> {movie.country || "Unknown"} </span>
-              <span className="inline-block w-[6px] h-[6px] bg-[#222C4F] rounded-full"></span>
-              <img src={StarIcon} alt="star" className="w-4 h-4" />
-              <span>{movie.imdb_rating}</span>
-            </p>
           </Link>
+            {movie.genres && movie.genres.length > 0 && (
+                    <div className="text-[12px] text-gray-500 flex flex-wrap gap-1 mt-1">
+                {movie.genres.map((genre, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => handleGenreClick(genre, e)}
+                    className="hover:text-[#724CF9] transition-colors duration-200 cursor-pointer"
+                    title={`View all ${genre} movies`}
+                  >
+                    {genre}{index < movie.genres.length - 1 ? ',' : ''}
+                  </button>
+                ))}
+              </div>
+            )}
+            <Link to={`/detail/${movie.id}`}>
+              <p className="mt-2 flex flex-wrap items-center gap-[12px] text-[18px] font-thin text-white/80">
+                <span>{movie.year || "N/A"}</span>
+                <span className="inline-block w-[6px] h-[6px] bg-[#222C4F] rounded-full"></span>
+                <span> {movie.country || "Unknown"} </span>
+                <span className="inline-block w-[6px] h-[6px] bg-[#222C4F] rounded-full"></span>
+                <img src={StarIcon} alt="star" className="w-4 h-4" />
+                <span>{movie.imdb_rating}</span>
+              </p>
+            </Link>
+          </div>
+
           <button 
           onClick={handleLike} 
           className="p-1 mt-2 md:mt-3 self-start transition-colors duration-300 group"
