@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import SearchBar from "../components/SearchBar";
 import MovieItem from "../components/MovieItem";
 import flashback from "../assets/icons/flashback.svg";
+import { useFavorites } from "../contexts/FavoritesContext";
 
 const List = () => {
   const [searchParams] = useSearchParams();
@@ -12,6 +13,7 @@ const List = () => {
   const genre = searchParams.get("genre") || "";
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { switchFavorite, isFavorite } = useFavorites();
 
   useEffect(() => {
     // console.log("useEffect triggered");
@@ -100,7 +102,12 @@ const List = () => {
       ) : (
         <ul>
           {movies.map((movie) => (
-            <MovieItem key={movie.id} movie={movie} />
+            <MovieItem 
+            key={movie.id}
+            movie={movie} 
+            isFavorite={isFavorite(movie.id)} 
+            onSwitchFavorite={switchFavorite}
+            />
           ))}
         </ul>
       )}

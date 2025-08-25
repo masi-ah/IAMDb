@@ -1,15 +1,12 @@
-import { useState } from "react";
 import StarIcon from "../assets/icons/star.svg";
 import { Link } from "react-router-dom";
 
-const MovieItem = ({ movie, onLikeChange }) => {
-  console.log(movie);
-  const [liked, setLiked] = useState(false);
+const MovieItem = ({ movie, isFavorite, onSwitchFavorite }) => {
+  // console.log(movie);
+  // const [liked, setLiked] = useState(false);
 
   const handleLike = () => {
-    const newLiked = !liked;
-    setLiked(newLiked);
-    if (onLikeChange) onLikeChange(movie.id, newLiked);
+   onSwitchFavorite(movie.id);
   };
 
   return (
@@ -40,9 +37,9 @@ const MovieItem = ({ movie, onLikeChange }) => {
           <button 
           onClick={handleLike} 
           className="p-1 mt-2 md:mt-3 self-start transition-colors duration-300 group"
-          aria-label={liked ? "Remove from favorites" : "Add to favorites"}
+          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
         >
-          {liked ? (
+          {isFavorite ? (
             <svg
               width="24"
               height="24"

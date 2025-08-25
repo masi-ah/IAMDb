@@ -6,14 +6,14 @@ import RatingCircle from "../components/RatingCircle";
 import MovieDetails from "../components/MovieDetails";
 import MovieRating from "../components/MovieRatings";
 import LikeButton from "../components/LikeButton";
+import { useFavorites } from "../contexts/FavoritesContext";
 
 const Detail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const {switchFavorite, isFavorite } = useFavorites();
 
   const handleflashback = () => {
     if (window.history.length > 1) {
@@ -23,14 +23,11 @@ const Detail = () => {
     } 
   };
 
-  const handleLike = () => {
-    setLiked((prev) => !prev);
+  const handleFavoriteClick = () => {
+  const currentlyFavorite = isFavorite(movie.id);
+  switchFavorite(movie.id); 
+   toast.success(currentlyFavorite ? "Removed from Favorites" : "Added to Favorites"); // پیام درست
   };
-
-  const switchFavorite = () => {
-    setIsFavorite((prev) => !prev);
-    toast.success(isFavorite ? "Removed from Favorites" : "Added to Favorites");
-  }
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -135,13 +132,10 @@ const Detail = () => {
               </div>
 
               <div className="sticky bottom-4 z-50 w-full max-w-lg mx-auto">
-                <button
-                  onClick={switchFavorite}
-                  className="text-white w-full bg-[#724CF9] flex items-center justify-center py-[12px] px-[24px] rounded-[12px] mt-4"
-                  aria-label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-                >
-                  {isFavorite ? "Added to Favorites" : "Add to Favorites"}
-                </button>
+                <LikeButton
+                  liked={isFavorite(movie.id)}
+                  onClick={handleFavoriteClick}
+                />
               </div>
             </div>
           </div>
@@ -189,7 +183,7 @@ const Detail = () => {
                     </div>
                   </div>
                   <div className="mt-2.5">
-                 <LikeButton liked={liked} onClick={handleLike}/>
+                 <LikeButton liked={isFavorite(movie.id)} onClick={handleFavoriteClick}/>
                  </div>
                 </div>
                 <p className="text-gray-300 leading-relaxed mb-6">

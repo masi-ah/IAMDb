@@ -3,11 +3,13 @@ import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import List from "./pages/List";
 import Detail from "./pages/Detail";
+import { FavoritesProvider } from "./contexts/FavoritesContext";
 
 import "./App.css";
 
 const App = () => {
   return (
+  <FavoritesProvider>
     <BrowserRouter>
       <div>
         <Toaster />
@@ -19,6 +21,7 @@ const App = () => {
         </Routes>
       </div>
     </BrowserRouter>
+  </FavoritesProvider>
   );
 };
 
