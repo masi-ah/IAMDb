@@ -1,12 +1,19 @@
-# React + Vite
+# IAMDb
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + Vite frontend application for browsing movies.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Sleek and modern design
+- Fully responsive and mobile compatible
+- Search by movie title or genre
+- Search using text or microphone!
+- View details about movies in the details page
 
-## Expanding the ESLint configuration
+## Running locally for development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Node.js 22 is required. Run these commands in the project root to run the dev server:
+```
+npm i
+npm run dev
+```
