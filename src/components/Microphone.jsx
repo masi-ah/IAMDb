@@ -90,13 +90,15 @@ const Microphone = ({ isListening, setIsListening, setSearchQuery }) => {
       type="button"
       onClick={isListening ? stopListening : startListening}
       disabled={!isSupported}
-      className={`absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center ${isListening ? "text-red-500" : "text-gray-700"} ${!isSupported ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center ${!isSupported ? "opacity-50 cursor-not-allowed" : ""}`}
     >
       <div className="w-[2px] h-[24px]  bg-[#070D23] mr-[16px]"></div>
       <img
         src={microphoneIcone}
         alt="voice search"
-        className="w-[24px] h-[24px] "
+        className={`w-[24px] h-[24px] transition-all duration-300 ${
+        isListening ? "opacity-100" : "opacity-50 grayscale"
+      }`}
       />
     </button>
   );
