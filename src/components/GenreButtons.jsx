@@ -1,5 +1,6 @@
 import GenreButton from "./GenreButton";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -26,41 +27,51 @@ const allGenre = [
   "Sport",
 ];
 
-const loadsteps = [4, 4, 4, 5, 3];
+const loadSteps = [4, 4, 4, 5, 3];
 
 const GenreButtons = () => {
-  const [visibleCount, setVisibleCount] = useState(loadsteps[0]);
+  const [visibleCount, setVisibleCount] = useState(loadSteps[0]);
   const [loadstepIndex, setLoadStepIndex] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const genreFromUrl = searchParams.get("genre") || null;
-
+  const hasMore = visibleCount < allGenre.length;
+  
   const handleClick = (genre) => {
     navigate(`/list?genre=${encodeURIComponent(genre)}`);
   };
 
   const loadMoreGenre = () => {
-    // console.log("loading more...")
-    if (loading) return;
-    if (visibleCount >= allGenre.length) return;
+    if (loading || !hasMore) return;
+    
     setLoading(true);
+
+    const toastId = toast.loading('Loading more genres...')
 
     setTimeout(() => {
       const nextLoadStep =
-        loadstepIndex < loadsteps.length
-          ? loadsteps[loadstepIndex]
-          : loadsteps[loadsteps.length - 1];
+        loadstepIndex < loadSteps.length
+          ? loadSteps[loadstepIndex]
+          : loadSteps[loadSteps.length - 1];
 
-      setVisibleCount((prev) => Math.min(prev + nextLoadStep, allGenre.length));
-      setLoadStepIndex((prev) => (prev < loadsteps.length ? prev + 1 : prev));
-      setLoading(false);
+     const newVisibleCount = Math.min(visibleCount + nextLoadStep, allGenre.length);
+       setVisibleCount(newVisibleCount);
+       setLoadStepIndex((prev) => (prev < loadSteps.length ? prev + 1 : prev));
+       setLoading(false);
+
+       toast.dismiss(toastId);
+
+       if (newVisibleCount >= allGenre.length) {
+        toast.success('All genres have been loaded!')
+       } else {
+        toast.success('More genres have been loaded!')
+       }
     }, 800);
   };
 
   const visibleGenres = allGenre.slice(0, visibleCount);
-  console.log("visibleCount:", visibleCount);
 
   return (
     <div
@@ -70,10 +81,15 @@ const GenreButtons = () => {
       <InfiniteScroll
         dataLength={visibleCount}
         next={loadMoreGenre}
-        hasMore={visibleCount < allGenre.length}
+        hasMore={hasMore}
         loader={
           loading && (
             <p className="text-white text-center w-full py-4">Loading... </p>
+          )
+        }
+        endMessage={
+         !hasMore && (
+            <p className="text-center text-gray-300 py-4"> All genres are displayed! </p>
           )
         }
       >
