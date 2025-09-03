@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import microphoneIcone from "../assets/icons/microphone.svg";
 
-const Microphone = ({ isListening, setIsListening, setSearchQuery }) => {
+const Microphone = ({ isListening, setIsListening, setSearchQuery, onSearch}) => {
   const recognitionRef = useRef(null);
   const [isSupported, setIsSupported] = useState(true);
 
@@ -34,6 +34,10 @@ const Microphone = ({ isListening, setIsListening, setSearchQuery }) => {
     recognitionRef.current.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setSearchQuery(transcript);
+
+      if (onSearch) {
+        onSearch(transcript);
+      }
       toast.success(`You said: "${transcript}"`, { id: "listening" });
     };
 

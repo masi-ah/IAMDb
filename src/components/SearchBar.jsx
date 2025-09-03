@@ -16,12 +16,8 @@ const SearchBar = ({ initialValue = "", onSearch }) => {
     e.preventDefault();
     if (searchQuery.trim() === "") return;
 
-    if (onSearch) {
-      onSearch(searchQuery);
-    } else {
-      navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
-    }
-  };
+    navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
+    };
 
   return (
     <form
@@ -46,6 +42,13 @@ const SearchBar = ({ initialValue = "", onSearch }) => {
         isListening={isListening}
         setIsListening={setIsListening}
         setSearchQuery={setSearchQuery}
+        onSearch={(query) => {
+          if (onSearch) {
+            onSearch(query);
+          } else {
+            navigate(`/list?query=${encodeURIComponent(query)}`);
+          }
+        }}
       />
     </form>
   );
