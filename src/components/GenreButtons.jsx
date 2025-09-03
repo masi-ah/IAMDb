@@ -74,12 +74,10 @@ const GenreButtons = () => {
   const visibleGenres = allGenre.slice(0, visibleCount);
 
   return (
-    <div
-      id="scrollableDiv"
-      className="max-w-sm mx-auto h-[80vh] overflow-y-auto "
+    <div className="max-w-sm mx-auto min-h-screen"
     >
       <InfiniteScroll
-        dataLength={visibleCount}
+        dataLength={visibleGenres.length}
         next={loadMoreGenre}
         hasMore={hasMore}
         loader={
