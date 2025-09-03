@@ -16,10 +16,6 @@ const List = () => {
   const { switchFavorite, isFavorite } = useFavorites();
 
   useEffect(() => {
-    // console.log("useEffect triggered");
-    // console.log("query:", query);
-    // console.log("genre:", genre);
-
     if (!query && !genre) return;
 
     const controller = new AbortController();
@@ -38,7 +34,6 @@ const List = () => {
         }
 
         url += params.join("&");
-        // console.log("fetching URL:", url);
 
         const res = await fetch(url, { signal });
 
@@ -48,7 +43,6 @@ const List = () => {
 
         const data = await res.json();
         let moviesData = data.data || data;
-        // console.log("movies API response:", moviesData);
 
         if (genre) {
           moviesData = moviesData.filter(movie =>
@@ -63,7 +57,6 @@ const List = () => {
         }
       } catch (err) {
         if (err.name !== "AbortError") toast.error(`Error: ${err.message}`);
-        // console.log("fetch aborted")
       } finally {
         setLoading(false);
       }
@@ -114,4 +107,5 @@ const List = () => {
     </div>
   );
 };
+
 export default List;
