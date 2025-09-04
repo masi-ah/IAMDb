@@ -1,8 +1,7 @@
 const MovieDetails = ({ movie }) => {
-  // console.log("Directors:", movie.directors, "writers:", movie.writers)
   const formatValue = (value) => {
     if (Array.isArray(value)) {
-      return value.join(",");
+      return value.join(", ");
     }
     return value || "";
   };
@@ -22,8 +21,7 @@ const MovieDetails = ({ movie }) => {
         {details.map((item, index) => (
           <div
             key={index}
-            className="flex border-b py-2 last:border-b-0"
-            style={{ borderColor: "#222c4f" }}
+            className="flex border-b py-2 last:border-b-0 border-[#222c4f]"
           >
             <span className=" text-[14px] text-white w-[120px]">
               {item.label}

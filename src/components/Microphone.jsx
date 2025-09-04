@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import microphoneIcone from "../assets/icons/microphone.svg";
 
-const Microphone = ({ isListening, setIsListening, setSearchQuery, onSearch}) => {
+const Microphone = ({ isListening, setIsListening, setSearchQuery, onSearch }) => {
   const recognitionRef = useRef(null);
   const [isSupported, setIsSupported] = useState(true);
 
@@ -96,13 +96,13 @@ const Microphone = ({ isListening, setIsListening, setSearchQuery, onSearch}) =>
       disabled={!isSupported}
       className={`absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center ${!isSupported ? "opacity-50 cursor-not-allowed" : ""}`}
     >
-      <div className="w-[2px] h-[24px]  bg-[#070D23] mr-[16px]"></div>
+      <div className="w-[2px] h-[24px] bg-[#070D23] mr-[16px]"></div>
       <img
         src={microphoneIcone}
         alt="voice search"
         className={`w-[24px] h-[24px] transition-all duration-300 ${
-        isListening ? "opacity-100" : "opacity-50 grayscale"
-      }`}
+          isListening ? "opacity-100" : "opacity-50 grayscale"
+        }`}
       />
     </button>
   );

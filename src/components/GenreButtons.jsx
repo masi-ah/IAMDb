@@ -48,7 +48,7 @@ const GenreButtons = () => {
     
     setLoading(true);
 
-    const toastId = toast.loading('Loading more genres...')
+    const toastId = toast.loading('Loading more genres...');
 
     setTimeout(() => {
       const nextLoadStep =
@@ -56,26 +56,25 @@ const GenreButtons = () => {
           ? loadSteps[loadstepIndex]
           : loadSteps[loadSteps.length - 1];
 
-     const newVisibleCount = Math.min(visibleCount + nextLoadStep, allGenre.length);
-       setVisibleCount(newVisibleCount);
-       setLoadStepIndex((prev) => (prev < loadSteps.length ? prev + 1 : prev));
-       setLoading(false);
+      const newVisibleCount = Math.min(visibleCount + nextLoadStep, allGenre.length);
+      setVisibleCount(newVisibleCount);
+      setLoadStepIndex((prev) => (prev < loadSteps.length ? prev + 1 : prev));
+      setLoading(false);
 
-       toast.dismiss(toastId);
+      toast.dismiss(toastId);
 
-       if (newVisibleCount >= allGenre.length) {
-        toast.success('All genres have been loaded!')
-       } else {
-        toast.success('More genres have been loaded!')
-       }
+      if (newVisibleCount >= allGenre.length) {
+        toast.success('All genres have been loaded!');
+      } else {
+        toast.success('More genres have been loaded!');
+      }
     }, 800);
   };
 
   const visibleGenres = allGenre.slice(0, visibleCount);
 
   return (
-    <div className="max-w-sm mx-auto min-h-screen"
-    >
+    <div className="max-w-sm mx-auto min-h-screen">
       <InfiniteScroll
         dataLength={visibleGenres.length}
         next={loadMoreGenre}
@@ -86,7 +85,7 @@ const GenreButtons = () => {
           )
         }
         endMessage={
-         !hasMore && (
+          !hasMore && (
             <p className="text-center text-gray-300 py-4"> All genres are displayed! </p>
           )
         }
