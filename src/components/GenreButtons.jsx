@@ -48,8 +48,6 @@ const GenreButtons = () => {
     
     setLoading(true);
 
-    const toastId = toast.loading('Loading more genres...');
-
     setTimeout(() => {
       const nextLoadStep =
         loadstepIndex < loadSteps.length
@@ -61,8 +59,6 @@ const GenreButtons = () => {
       setLoadStepIndex((prev) => (prev < loadSteps.length ? prev + 1 : prev));
       setLoading(false);
 
-      toast.dismiss(toastId);
-
       if (newVisibleCount >= allGenre.length) {
         toast.success('All genres have been loaded!');
       } else {
@@ -72,6 +68,14 @@ const GenreButtons = () => {
   };
 
   const visibleGenres = allGenre.slice(0, visibleCount);
+
+  const rows = [];
+  let start = 0;
+  for (let i = 0; i < loadSteps.length && start < visibleCount; i++) {
+    const count = loadSteps[i];
+    rows.push(visibleGenres.slice(start, start + count));
+    start += count;
+  }
 
   return (
     <div className="max-w-sm mx-auto min-h-screen">
@@ -84,20 +88,19 @@ const GenreButtons = () => {
             <p className="text-white text-center w-full py-4">Loading... </p>
           )
         }
-        endMessage={
-          !hasMore && (
-            <p className="text-center text-gray-300 py-4"> All genres are displayed! </p>
-          )
-        }
       >
-        <div className="flex flex-wrap gap-[10px] justify-center mt-[30px]">
-          {visibleGenres.map((genre) => (
-            <GenreButton
-              key={genre}
-              genre={genre}
-              isActive={genre === genreFromUrl}
-              onClick={() => handleClick(genre)}
-            />
+        <div className="flex flex-col gap-2 mt-[30px]">
+          {rows.map((row, rowIndex) => (
+            <div key={rowIndex} className="flex gap-2 justify-center">
+              {row.map((genre) => (
+                <GenreButton
+                  key={genre}
+                  genre={genre}
+                  isActive={genre === genreFromUrl}
+                  onClick={() => handleClick(genre)}
+                />
+              ))}
+            </div>
           ))}
         </div>
       </InfiniteScroll>
