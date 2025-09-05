@@ -61,8 +61,6 @@ const GenreButtons = () => {
 
       if (newVisibleCount >= allGenre.length) {
         toast.success('All genres have been loaded!');
-      } else {
-        toast.success('More genres have been loaded!');
       }
     }, 800);
   };
