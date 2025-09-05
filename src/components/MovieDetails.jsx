@@ -5,7 +5,8 @@ const MovieDetails = ({ movie }) => {
     }
     return value || "";
   };
-  const details = [
+
+  const getMovieDetails = () => [
     { label: "Directors", value: formatValue(movie.director) },
     { label: "Writers", value: formatValue(movie.writer) },
     { label: "Actors", value: formatValue(movie.actors) },
@@ -13,6 +14,8 @@ const MovieDetails = ({ movie }) => {
     { label: "Language", value: movie.language },
     { label: "Awards", value: movie.awards },
   ].filter((item) => item.value && item.value.trim() !== "");
+
+  const details = getMovieDetails();
 
   return (
     <div className="text-white">
