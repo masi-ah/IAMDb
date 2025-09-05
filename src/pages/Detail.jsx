@@ -8,6 +8,24 @@ import MovieRating from "../components/MovieRatings";
 import LikeButton from "../components/LikeButton";
 import { useFavorites } from "../contexts/FavoritesContext";
 
+const movieService = {
+  fetchMovie: async (id) => {
+    try {
+      const res = await fetch(
+        `https://moviesapi.codingfront.dev/api/v1/movies/${id}`
+      );
+
+      if (!res.ok) {
+        throw new Error("Movie not found");
+      }
+
+      return await res.json();
+    } catch (error) {
+      throw new Error(error.message || "Error fetching movie data");
+    }
+  },
+};
+
 const Detail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -24,6 +42,8 @@ const Detail = () => {
   };
 
   const handleFavoriteClick = () => {
+    if (!movie) return;
+
     const currentlyFavorite = isFavorite(movie.id);
     switchFavorite(movie.id);
     toast.success(
@@ -32,26 +52,30 @@ const Detail = () => {
   };
 
   useEffect(() => {
-    const fetchMovie = async () => {
+    const fetchMovieData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `https://moviesapi.codingfront.dev/api/v1/movies/${id}`
-        );
-        if (!res.ok) {
-          throw new Error("Movie not found");
-        }
-        const data = await res.json();
-        setMovie(data);
+        const movieData = await movieService.fetchMovie(id);
+        setMovie(movieData);
       } catch (error) {
+        console.error("Error fetching movie:", error);
         toast.error(error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMovie();
+    if (id) {
+      fetchMovieData();
+    }
   }, [id]);
+
+  const isMovieFavorite = movie ? isFavorite(movie.id) : false;
+  const genresString = movie?.genres?.join(", ") || "";
+  const backgroundImageStyle = movie?.images?.[0] 
+    ? { backgroundImage: `url(${movie.images[0]})` } 
+    : {};
+  const posterSrc = movie?.poster || movie?.images?.[0] || "";
 
   if (loading)
     return (
@@ -66,15 +90,13 @@ const Detail = () => {
       </div>
     );
 
-  const isMovieFavorite = isFavorite(movie.id);
-
   return (
     <div className="min-h-screen bg-[#070D23]">
       <div className="md:hidden">
         <div className="relative h-[50vh] w-full">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${movie.images?.[0]})` }}
+            style={backgroundImageStyle}
           ></div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#070D23] via-[#070D23]/80 to-transparent z-[10]"></div>
 
@@ -127,7 +149,7 @@ const Detail = () => {
 
             <div className="w-full flex justify-center mt-4">
               <img
-                src={movie.poster || movie.images?.[0]}
+                src={posterSrc}
                 alt={`${movie.title} Poster`}
                 className="w-full h-auto rounded-[18px]"
               />
@@ -160,7 +182,7 @@ const Detail = () => {
         <div className="relative h-[50vh] w-full">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${movie.images?.[0]})` }}
+            style={backgroundImageStyle}
           ></div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#070D23] via-[#070D23]/80 to-transparent z-10"></div>
           <div className="container mx-auto px-6 max-w-[920px] py-4 relative z-20">
@@ -176,7 +198,7 @@ const Detail = () => {
           <div className="flex gap-20">
             <div className="w-[208px]">
               <img
-                src={movie.poster || movie.images?.[0]}
+                src={posterSrc}
                 alt={`${movie.title} Poster`}
                 className="w-full rounded-2xl shadow-xl"
               />
@@ -190,12 +212,12 @@ const Detail = () => {
                 <div>
                   <h1 className="text-[48px] font-bold mb-2">{movie.title}</h1>
                   <div className="text-gray-400 text-sm">
-                    {movie.genres.join(", ")}
+                    {genresString}
                   </div>
                 </div>
                 <div className="mt-2.5">
                   <LikeButton
-                    liked={isFavorite(movie.id)}
+                    liked={isMovieFavorite}
                     onClick={handleFavoriteClick}
                   />
                 </div>
