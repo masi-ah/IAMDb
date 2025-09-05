@@ -4,12 +4,21 @@ const FavoritesContext = createContext();
 
 const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState(() => {
+    try{
     const saved = localStorage.getItem("favorites");
     return saved ? new Set(JSON.parse(saved)) : new Set();
+  } catch (error){
+    console.error("Error loading favorites from localStorage:", error);
+    return new Set();
+  }
   });
 
   useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify([...favorites]));
+    try {
+      localStorage.setItem("favorites", JSON.stringify([...favorites]));
+    } catch (error) {
+      console.error("Error saving favorites to localStorage:", error);
+    }
   }, [favorites]);
 
   const switchFavorite = (movieId) => {

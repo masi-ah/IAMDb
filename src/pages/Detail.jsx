@@ -200,7 +200,7 @@ const Detail = () => {
                   />
                 </div>
               </div>
-              <p className="text-gray-300 leading-relaxed mb-6">{movie.plot}</p>
+             <p className="text-gray-300 leading-relaxed mb-6">{movie.plot}</p>
 
               <div className="flex gap-3 mb-8">
                 {movie.rated && (
