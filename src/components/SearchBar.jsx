@@ -1,45 +1,45 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import searchIcon from "../assets/icons/search.svg";
 import Microphone from "./Microphone";
 
-const SearchBar = ({ initialValue = "", onSearch, delay = 500 }) => {
+const SearchBar = ({ initialValue = "", onSearch }) => {
   const [isListening, setIsListening] = useState(false);
   const [searchQuery, setSearchQuery] = useState(initialValue);
   const navigate = useNavigate();
-  const [debouncedQuery, setDebouncedQuery] = useState(initialValue);
-
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     setSearchQuery(initialValue);
-    setDebouncedQuery(initialValue); 
   }, [initialValue]);
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    if (!searchQuery) return;
+    
     const handler = setTimeout(() => {
-      setDebouncedQuery(searchQuery);
-    }, delay);
+      if (onSearch) {
+        onSearch(searchQuery);
+      } else {
+        navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
+      }
+    }, 500);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchQuery, delay]);
-
-  useEffect(() => {
-    if (!onSearch) return;
-    if (debouncedQuery.trim() === "") return; 
-
-    onSearch(debouncedQuery);
-  }, [debouncedQuery, onSearch]);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (searchQuery.trim() === "") return; 
+    if (searchQuery.trim() === "") return;
 
     if (onSearch) {
       onSearch(searchQuery);
     } else {
-      navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
+    navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
     }
   };
 
@@ -67,7 +67,11 @@ const SearchBar = ({ initialValue = "", onSearch, delay = 500 }) => {
         setIsListening={setIsListening}
         setSearchQuery={setSearchQuery}
         onSearch={(query) => {
-          setSearchQuery(query);
+          if (onSearch) {
+            onSearch(query);
+          } else {
+            navigate(`/list?query=${encodeURIComponent(query)}`);
+          }
         }}
       />
     </form>
