@@ -120,7 +120,7 @@ const Detail = () => {
             </h1>
 
             <div className="text-[12px] font-light text-white/40 -mt-3">
-              {movie.genres.join(", ")}
+              {genresString}
             </div>
 
             <p className="text-white/60 mt-2 text-[14px] leading-[24px]">

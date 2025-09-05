@@ -89,7 +89,7 @@ const List = () => {
         </div>
         <div className="w-10" />
       </div>
-      <SearchBar initialQuery={query} onSearch={handleSearch} />
+      <SearchBar initialValue={query} onSearch={handleSearch} />
       {loading ? (
         <div className="text-center text-white mt-6"> loading movies...</div>
       ) : (
