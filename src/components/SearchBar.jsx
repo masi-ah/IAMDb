@@ -3,21 +3,45 @@ import { useNavigate } from "react-router-dom";
 import searchIcon from "../assets/icons/search.svg";
 import Microphone from "./Microphone";
 
-const SearchBar = ({ initialValue = "", onSearch }) => {
+const SearchBar = ({ initialValue = "", onSearch, delay = 500 }) => {
   const [isListening, setIsListening] = useState(false);
   const [searchQuery, setSearchQuery] = useState(initialValue);
   const navigate = useNavigate();
+  const [debouncedQuery, setDebouncedQuery] = useState(initialValue);
+
 
   useEffect(() => {
     setSearchQuery(initialValue);
+    setDebouncedQuery(initialValue); 
   }, [initialValue]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery, delay]);
+
+  useEffect(() => {
+    if (!onSearch) return;
+    if (debouncedQuery.trim() === "") return; 
+
+    onSearch(debouncedQuery);
+  }, [debouncedQuery, onSearch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (searchQuery.trim() === "") return;
+    if (searchQuery.trim() === "") return; 
 
-    navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
-    };
+    if (onSearch) {
+      onSearch(searchQuery);
+    } else {
+      navigate(`/list?query=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     <form
@@ -43,11 +67,7 @@ const SearchBar = ({ initialValue = "", onSearch }) => {
         setIsListening={setIsListening}
         setSearchQuery={setSearchQuery}
         onSearch={(query) => {
-          if (onSearch) {
-            onSearch(query);
-          } else {
-            navigate(`/list?query=${encodeURIComponent(query)}`);
-          }
+          setSearchQuery(query);
         }}
       />
     </form>
